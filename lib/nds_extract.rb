@@ -1,6 +1,7 @@
 # Provided, don't edit
 require 'directors_database'
-
+require 'pp'
+#print pp directors_database
 # A method we're giving you. This "flattens"  Arrays of Arrays so: [[1,2],
 # [3,4,5], [6]] => [1,2,3,4,5,6].
 
@@ -21,7 +22,7 @@ def flatten_a_o_a(aoa)
 end
 
 def movie_with_director_name(director_name, movie_data)
-  { 
+  {
     :title => movie_data[:title],
     :worldwide_gross => movie_data[:worldwide_gross],
     :release_year => movie_data[:release_year],
@@ -48,6 +49,16 @@ def movies_with_director_key(name, movies_collection)
   # Array of Hashes where each Hash represents a movie; however, they should all have a
   # :director_name key. This addition can be done by using the provided
   # movie_with_director_name method
+
+
+newArray=[]
+  i = 0
+  while i < movies_collection.length do
+    newArray<<movie_with_director_name(name, movies_collection[i])
+
+    i+= 1
+  end
+  newArray
 end
 
 
@@ -63,6 +74,26 @@ def gross_per_studio(collection)
   #
   # Hash whose keys are the studio names and whose values are the sum
   # total of all the worldwide_gross numbers for every movie in the input Hash
+
+#aoh where each hash represents a movie, return hash that includes gross for each studio
+
+studio_sums = {}
+i = 0
+
+while i < collection.length do
+  studio_name = collection[i][:studio]
+  movie_gross = collection[i][:worldwide_gross]
+
+  if !studio_sums[studio_name]
+      studio_sums[studio_name]= movie_gross
+  else
+    studio_sums[studio_name] += movie_gross
+  end
+
+  i+=1
+
+end
+studio_sums
 end
 
 def movies_with_directors_set(source)
@@ -76,7 +107,49 @@ def movies_with_directors_set(source)
   #
   # Array of Arrays containing all of a director's movies. Each movie will need
   # to have a :director_name key added to it.
+
+result=[]
+counter1=0
+
+while counter1<source.length do
+  counter2=0
+  directors_movies = source[counter1][:movies]
+  directors_movies_updated = []
+  while counter2 < directors_movies.length do
+
+    directors_movies_updated<<movie_with_director_name(source[counter1][:name], directors_movies[counter2])
+
+    counter2 +=1
+
+  end
+  result<<directors_movies_updated
+  counter1 +=1
+  
 end
+result
+
+end
+
+
+
+
+
+#   answer=[]
+#   i=0
+#
+#     while i < source.length do
+#       directors_movies=[]
+#       counter=0
+#       while counter < movies_collection.length do
+#
+#       end
+#       directors_movies<<movie_with_director_name(name, source[i])
+#     #movies_array<<source[i][:movies]
+#
+#     i += 1
+#     end
+#   answer
+# end
 
 # ----------------    End of Your Code Region --------------------
 # Don't edit the following code! Make the methods above work with this method
